@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="layout.xhtml">
+	<style>
+#imgDelete {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	display: none;
+
+	/** Demo **/
+	.
+	ui-grid-row
+	.ui-grid-col-2,
+	.ui-grid-row
+	.ui-grid-col-10
+	{
+	padding
+	:
+	0.5em
+	0;
+}
+
+.ui-outputlabel {
+	font-weight: bold;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+}
+</style>
+	<ui:define name="content">
+
+		<h:form id="itemForm">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col">
+						<h:panelGrid columns="6" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<h:outputLabel style="width:100%" size="48" value="Product Name" />
+							<p:inputText id="name" value="#{itemController.item.nome}"
+								style="width:100%" size="48">
+
+							</p:inputText>
+							<h:outputLabel style="width:100%" size="48" value="Category" />
+							<p:inputText id="category"
+								value="#{itemController.item.category}" style="width:100%"
+								size="48">
+
+							</p:inputText>
+							<h:outputLabel style="width:100%" size="48" value="Discription" />
+							<p:inputText id="description"
+								value="#{itemController.item.description}" style="width:100%"
+								size="48">
+
+							</p:inputText>
+							<h:outputLabel style="width:100%" size="48" value="price" />
+							<p:inputText id="price" value="#{itemController.item.price}"
+								style="width:100%" size="48">
+
+							</p:inputText>
+							<h:outputLabel style="width:100%" size="48" value="Quantity" />
+							<p:inputText id="quantity"
+								value="#{itemController.item.quantity}" style="width:100%"
+								size="48">
+
+							</p:inputText>
+							<h:outputLabel style="width:100%" size="48" value="rate" />
+							<p:inputText id="rate" value="#{itemController.item.rating}"
+								style="width:100%" size="48">
+
+							</p:inputText>
+
+
+						</h:panelGrid>
+						<h:outputText value="&lt;br/&gt;" escape="false" />
+						<p:commandButton styleClass="legend-btn" value="Add"
+							action="#{itemController.save}" update="itemForm" />
+						<br />
+					</div>
+
+				</div>
+
+			</div>
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col">
+						<p:growl id="msgs" showDetail="true" />
+
+						<p:dataTable id="table"  widgetVar="dtProducts" class="mytable" var="item" editable="true"
+							editMode="cell" rendered="#{not empty itemController.itemsList}"
+							reflow="true" value="#{itemController.itemsList}"
+							styleClass="table">
+							<f:facet class="mytable" name="header">
+								<div class="products-table-header">
+									<span style="font-weight: bold">PRODUCTS</span> <span
+										class="filter-container ui-input-icon-left"> <i
+										class="pi pi-search"></i> <p:inputText id="globalFilter"
+											onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+									</span>
+
+								</div>
+							</f:facet>
+							<p:ajax event="cellEdit" listener="#{itemController.onCellEdit}"
+								update=":itemForm:msgs" />
+
+						 
+
+							<p:column headerText="Product Name" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.nome}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="nome" value="#{item.nome}" style="width:100%"
+											label="Nome" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Category" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.category}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="category" value="#{item.category}"
+											style="width:100%" label="category" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Description" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.description}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="description" value="#{item.description}"
+											style="width:100%" label="description" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="price" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.price}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="price" value="#{item.price}"
+											style="width:100%" label="description" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Quantity" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.quantity}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="Quantity" value="#{item.quantity}"
+											style="width:100%" label="description" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+
+							<p:column headerText="Rateing" style="text-align: left;">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{item.rating}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="rating" value="#{item.rating}"
+											style="width:100%" label="description" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+
+
+
+
+
+							<p:column style="width:50px">
+								<p:commandLink action="#{itemController.deleteItem(item)}"
+									update="itemForm">
+									<img src="resources/asserts/trash_grey.png"
+										onmouseover="this.src='resources/asserts/trash_red.png'"
+										onmouseout="this.src='resources/asserts/trash_grey.png'" />
+								</p:commandLink>
+							</p:column>
+
+						 
+
+						</p:dataTable>
+
+					</div>
+				</div>
+			</div>
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+			
+		</h:form>
+	</ui:define>
+
+	<script>
+		function display(img) {
+			img.;
+		}
+	</script>
+</ui:composition>
+
+</html>
