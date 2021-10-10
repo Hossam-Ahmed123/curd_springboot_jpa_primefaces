@@ -34,17 +34,7 @@ public class ItemDaoImpl implements ItemDao {
 		return this.itemRepository.findAll();
 	}
 
-	@Override
-	public List<Item> findItemsActives() {
-		return this.itemRepository.findItemsActives();
 
-	}
-
-	@Override
-	public List<Item> findItemsCompleted() {
-		return this.itemRepository.findItemsCompleted();
-
-	}
 
 	@Override
 	public void deleteById(int id) {

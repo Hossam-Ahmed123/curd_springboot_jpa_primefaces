@@ -121,7 +121,7 @@
 
 						 
 
-							<p:column headerText="Product Name" style="text-align: left;">
+							<p:column headerText="Product Name" filterable="false" filterBy="#{item.nome}" style="text-align: left;">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{item.nome}" />
