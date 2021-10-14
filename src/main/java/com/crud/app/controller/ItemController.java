@@ -74,6 +74,8 @@ public class ItemController {
 				}
 
 			} else {
+				itemDao.saveOrUpdate(this.selectedProduct);
+				loadData();
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
 
 			}
