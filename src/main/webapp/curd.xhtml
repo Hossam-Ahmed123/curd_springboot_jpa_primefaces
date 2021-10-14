@@ -136,9 +136,9 @@
 
 					</p:dataTable>
 				</div>
-				<p:dialog header="Product Details" showEffect="fade" modal="true"
-					widgetVar="manageProductDialog" styleClass="mydialog"
-					class="dialog" responsive="true">
+				<p:dialog header="Product Details" class="mytable" showEffect="fade" modal="true"
+					widgetVar="manageProductDialog" styleClass="table" 
+					  responsive="true">
 					<p:outputPanel id="manage-product-content" class="ui-fluid">
 						<p:outputPanel
 							rendered="#{not empty itemController.selectedProduct}">
@@ -182,7 +182,7 @@
 								<p:outputLabel for="rat">Rate</p:outputLabel>
 								<p:inputText id="rat"
 									value="#{itemController.selectedProduct.rating}"
-									required="true" />
+									 />
 							</div>
 						</p:outputPanel>
 					</p:outputPanel>
