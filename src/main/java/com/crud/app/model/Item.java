@@ -12,6 +12,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 public class Item {
 
+	
+
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -33,6 +35,10 @@ public class Item {
 	@Column(name = "rating")
 	private int rating;
 
+	@Column(name = "code")
+	private String code;
+	
+	
 	public Item(String nome ) {
 		this();
 		this.nome = nome;
@@ -101,5 +107,14 @@ public class Item {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 
 }

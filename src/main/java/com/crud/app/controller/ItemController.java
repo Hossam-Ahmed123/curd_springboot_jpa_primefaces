@@ -1,6 +1,7 @@
 package com.crud.app.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,6 +12,7 @@ import org.ocpsoft.rewrite.annotation.RequestAction;
 import org.ocpsoft.rewrite.el.ELBeanName;
 import org.ocpsoft.rewrite.faces.annotation.Deferred;
 import org.ocpsoft.rewrite.faces.annotation.IgnorePostback;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,26 +25,25 @@ import com.crud.app.model.Item;
 @Scope(value = "session")
 @Component(value = "itemController")
 @ELBeanName(value = "itemController")
-@Join(path = "/", to = "/item-form.jsf")
- 
+//@Join(path = "/", to = "/item-form.jsf")
+@Join(path = "/", to = "/curd.jsf")
 public class ItemController {
 
 	@Autowired
 	private ItemDao itemDao;
 
-	private Item item;
+	private Item selectedProduct;
+
+//	private Item selectedProduct;
 
 	private List<Item> itemsList;
 
-	 
-
 	@PostConstruct
 	public void init() {
-		item = new Item();
+
 		loadData();
 	}
 
-	 
 	@Deferred
 	@RequestAction
 	@IgnorePostback
@@ -50,60 +51,58 @@ public class ItemController {
 		itemsList = itemDao.findAll();
 	}
 
+	public void openNew() {
+		this.selectedProduct = new Item();
+	}
+
 	public String save() {
 
-		if (item.getNome() == null || item.getNome().trim() == "") {
-			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Product Name is Empty.",
-					"please type product name.");
+		if (this.selectedProduct.getNome() == null || this.selectedProduct.getNome().trim() == "") {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please Type Product Name"));
 			return null;
 		} else {
-			 
-			try {
-				itemDao.saveOrUpdate(item);
-				item = new Item();
-				loadData();
-			} catch (Exception e) {
-				Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Error.", e.getMessage());
+
+			if (this.selectedProduct.getCode() == null) {
+				this.selectedProduct.setCode(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 9));
+				try {
+					itemDao.saveOrUpdate(this.selectedProduct);
+
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Added"));
+					loadData();
+				} catch (Exception e) {
+					Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Error.", e.getMessage());
+				}
+
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+
 			}
-
-			return "/item-form.xhtml?faces-redirect=true";
+			PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+			PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+			return "true";
 		}
 
 	}
 
- 
+	public void deleteProduct() {
+		this.itemDao.delete(this.selectedProduct);
+		this.selectedProduct = null;
+		loadData();
+		PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Removed"));
 
-	public void deleteItem(Item item) {
-		try {
-			itemDao.delete(item);
-			loadData();
-		} catch (Exception e) {
-			Messages.generateMessageInfo(FacesMessage.SEVERITY_ERROR, "Error.", e.getMessage());
-		}
-	}
-
- 
-	public void onCellEdit(CellEditEvent event) {
-		Object oldValue = event.getOldValue();
-		Object newValue = event.getNewValue();
-
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (newValue != null && !newValue.equals(oldValue)) {
-			Item item = context.getApplication().evaluateExpressionGet(context, "#{item}", Item.class);
-			itemDao.saveOrUpdate(item);
-			Messages.generateMessageInfo(FacesMessage.SEVERITY_INFO, "Product is updated",
-					"Old: " + oldValue + ",  New :" + newValue);
-		}
-	}
-
-	public Item getItem() {
-		return item;
 	}
 
 	public List<Item> getItemsList() {
 		return itemsList;
 	}
 
-	 
+	public Item getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(Item selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
 
 }
