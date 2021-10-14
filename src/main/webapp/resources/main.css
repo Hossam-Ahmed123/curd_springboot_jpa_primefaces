@@ -5567,7 +5567,6 @@ opacity
 	margin: 0 auto 20px auto
 }
 
-@media ( max-width :1170px) {
 	.graph-container {
 		width: 1140px
 	}
@@ -5601,7 +5600,9 @@ td.mytoogler {
 }
 
 .mytable2.ui-datatable-resizable.canal-table table {
+	
 	width: auto;
+	text-align: center; 
 	display: table-cell;
 	table-layout: fixed
 }
@@ -15451,3 +15452,7 @@ label.news-title-last {
 
 
 
+.ui-state-default 
+{
+	text-align:  center;
+}
