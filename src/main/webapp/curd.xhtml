@@ -74,20 +74,19 @@
 						<f:facet name="header">
 							<div class="products-table-header">
 								<span style="font-weight: bold">PRODUCTS</span> <span
-									class="filter-container ui-input-icon-left"> <i
-									class="pi pi-search"></i> <p:inputText id="globalFilter"
-										onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+									class="filter-container ui-input-icon-left"> 
 								</span>
 
 							</div>
 						</f:facet>
 
-						<p:column headerText="Code" filterable="false"
-							filterBy="#{product.code}">
+						<p:column headerText="Code"  >
 							<h:outputText value="#{product.code}" />
 						</p:column>
-						<p:column headerText="Name" filterable="false"
-							filterBy="#{product.nome}">
+						<p:column headerText="Name"   
+							 
+							
+							>
 							<h:outputText value="#{product.nome}" />
 						</p:column>
 
